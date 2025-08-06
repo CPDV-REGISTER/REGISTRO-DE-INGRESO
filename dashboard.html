@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Ingresos en Tiempo Real</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            text-align: center;
+        }
+        .filter-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input, select {
+            padding: 8px;
+            margin: 0 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Panel de Ingresos en Tiempo Real</h2>
+
+    <div class="filter-container">
+        <input type="text" id="buscarNombre" placeholder="Buscar por Nombre">
+        <select id="filtrarPunto">
+            <option value="">Todos los Puntos</option>
+            <option value="Charly 2">Charly 2</option>
+            <option value="Charly 3">Charly 3</option>
+        </select>
+        <select id="filtrarTipo">
+            <option value="">Todos los Tipos</option>
+            <option value="Peatonal">Peatonal</option>
+            <option value="Vehicular">Vehicular</option>
+        </select>
+        <button onclick="cargarDatos()">Actualizar</button>
+    </div>
+
+    <table id="tablaRegistros">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>RUT</th>
+                <th>Empresa</th>
+                <th>Tipo</th>
+                <th>Patente</th>
+                <th>Punto</th>
+                <th>Hora</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzJ9PQDgvRNph03zUtnjLu84SKeBah4stCMxGhsBWjJVv69OnEWAF9nTNBOAqcyWSAPZA/exec'; // Reemplaza con tu URL
+
+        function cargarDatos() {
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    const nombreFiltro = document.getElementById('buscarNombre').value.toLowerCase();
+                    const puntoFiltro = document.getElementById('filtrarPunto').value;
+                    const tipoFiltro = document.getElementById('filtrarTipo').value;
+
+                    const tbody = document.querySelector('#tablaRegistros tbody');
+                    tbody.innerHTML = '';
+
+                    data.filter(registro => {
+                        return (
+                            (nombreFiltro === '' || registro.nombre.toLowerCase().includes(nombreFiltro)) &&
+                            (puntoFiltro === '' || registro.punto === puntoFiltro) &&
+                            (tipoFiltro === '' || registro.tipo === tipoFiltro)
+                        );
+                    }).forEach(registro => {
+                        const fila = `
+                            <tr>
+                                <td>${registro.nombre}</td>
+                                <td>${registro.rut}</td>
+                                <td>${registro.empresa}</td>
+                                <td>${registro.tipo}</td>
+                                <td>${registro.patente}</td>
+                                <td>${registro.punto}</td>
+                                <td>${registro.hora}</td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += fila;
+                    });
+                })
+                .catch(error => console.error('Error cargando datos:', error));
+        }
+
+        // Cargar datos al inicio y refrescar cada 5 segundos
+        cargarDatos();
+        setInterval(cargarDatos, 5000);
+
+        // Filtros en tiempo real
+        document.getElementById('buscarNombre').addEventListener('input', cargarDatos);
+        document.getElementById('filtrarPunto').addEventListener('change', cargarDatos);
+        document.getElementById('filtrarTipo').addEventListener('change', cargarDatos);
+    </script>
+</body>
+</html>
+
