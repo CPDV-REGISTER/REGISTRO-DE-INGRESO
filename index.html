@@ -102,17 +102,19 @@
 
               // Cuenta regresiva
         document.getElementById('registroForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            let countdown = 3;
+            e.preventDefault(); // Evita que el formulario se envíe de forma tradicional.
+            let countdown = 5;
             const countdownMensaje = document.getElementById('countdownMensaje');
             countdownMensaje.innerText = `Enviando en ${countdown}...`;
 
             const interval = setInterval(() => {
                 countdown--;
                 if (countdown > 0) {
+                    // Muestra el contador en pantalla
                     countdownMensaje.innerText = `Enviando en ${countdown}...`;
                 } else {
-                    clearInterval(interval);
+                    clearInterval(interval); // Detiene el contador
+        // Aquí enviamos los datos a Google Sheets
 
                     // Enviar datos después del countdown
                     const nombre = document.getElementById('nombre').value;
@@ -141,11 +143,12 @@
                         countdownMensaje.innerText = '';
                     });
                 }
-            }, 1000);
+            }, 1000);// Cada 1000ms (1 segundo)
         });
     </script>
 </body>
 </html>
+
 
 
 
