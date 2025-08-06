@@ -10,12 +10,21 @@
         <input type="text" id="nombre" placeholder="Nombre" required><br>
         <input type="text" id="rut" placeholder="RUT" required><br>
         <input type="text" id="empresa" placeholder="Empresa" required><br>
+        // Texto para identificar tipo de ingreso
+        <label for="tipo">Tipo de Ingreso:</label><br> 
         <select id="tipo" required>
+            <option value="">Seleccionar</option>
             <option value="Peatonal">Peatonal</option>
             <option value="Vehicular">Vehicular</option>
         </select><br>
-        <input type="text" id="patente" placeholder="Patente"><br>
+        // Si es vehicular aparece el campo patente        
+        <div id="patenteDiv" style="display:none;">
+            <input type="text" id="patente" placeholder="Patente"><br>
+        </div>
+// Texto para identificar punto de ingreso        
+        <label for="punto">Punto de Ingreso:</label><br>
         <select id="punto" required>
+            <option value="">Seleccionar</option>
             <option value="Charly 2">Charly 2</option>
             <option value="Charly 3">Charly 3</option>
         </select><br>
@@ -27,12 +36,25 @@
     <script>
         const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzHH3Z-sdS4sQdhBqfdcDIQ8GKNq7MoM95ZsY_KyXza-cRK2olqfWKrdsxAY1Yul7jtIg/exec'; // Reemplaza con tu URL
 
+        // Mostrar/ocultar patente si elige Vehicular
+        document.getElementById('tipo').addEventListener('change', function() {
+            const patenteDiv = document.getElementById('patenteDiv');
+            if (this.value === 'Vehicular') {
+                patenteDiv.style.display = 'block';
+                document.getElementById('patente').setAttribute('required', 'required');
+            } else {
+                patenteDiv.style.display = 'none';
+                document.getElementById('patente').removeAttribute('required');
+            }
+        });
+
         document.getElementById('registroForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            let countdown = 3;
+        // Cuenta regresiva
+            let countdown = 5;
             const countdownMensaje = document.getElementById('countdownMensaje');
-            countdownMensaje.innerText = `Enviando en ${countdown}...`;
+            countdownMensaje.innerText = `Enviando registro en ${countdown}...`;
 
             const interval = setInterval(() => {
                 countdown--;
@@ -46,7 +68,7 @@
                     const rut = document.getElementById('rut').value;
                     const empresa = document.getElementById('empresa').value;
                     const tipo = document.getElementById('tipo').value;
-                    const patente = document.getElementById('patente').value;
+                    const patente = tipo === 'Vehicular' ? document.getElementById('patente').value : '';
                     const punto = document.getElementById('punto').value;
                     const hora = new Date().toLocaleString();
 
@@ -59,6 +81,7 @@
                     .then(() => {
                         document.getElementById('mensaje').innerText = 'Registro enviado correctamente.';
                         document.getElementById('registroForm').reset();
+                        document.getElementById('patenteDiv').style.display = 'none';
                         countdownMensaje.innerText = '';
                     })
                     .catch(error => {
@@ -72,5 +95,6 @@
     </script>
 </body>
 </html>
+
 
 
