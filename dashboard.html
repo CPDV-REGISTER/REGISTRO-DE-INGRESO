@@ -143,19 +143,20 @@
                 .then(response => response.json())
                 .then(data => {
                     let csvContent = "data:text/csv;charset=utf-8,"
+                   // Agrega cabeceras
                         + "Nombre,RUT,Empresa,Tipo,Patente,Punto,Hora\n";
-
+                   // Agrega registros
                     data.forEach(registro => {
                         let row = `${registro.nombre},${registro.rut},${registro.empresa},${registro.tipo},${registro.patente},${registro.punto},${registro.hora}`;
                         csvContent += row + "\n";
                     });
-
+  // Crea un link para descargar el archivo
                     const encodedUri = encodeURI(csvContent);
                     const link = document.createElement("a");
                     link.setAttribute("href", encodedUri);
                     link.setAttribute("download", "registros_ingreso.csv");
                     document.body.appendChild(link);
-                    link.click();
+                    link.click(); // Hace la descarga
                     document.body.removeChild(link);
                 });
         }
