@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,7 +16,7 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        input, select {
+        input, select, button {
             padding: 8px;
             margin: 0 5px;
         }
@@ -56,6 +55,7 @@
             <option value="Vehicular">Vehicular</option>
         </select>
         <button onclick="cargarDatos()">Actualizar</button>
+        <button onclick="descargarExcel()">Descargar Excel</button>
     </div>
 
     <table id="tablaRegistros">
@@ -74,7 +74,7 @@
     </table>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbzHH3Z-sdS4sQdhBqfdcDIQ8GKNq7MoM95ZsY_KyXza-cRK2olqfWKrdsxAY1Yul7jtIg/exec'; // Reemplaza con tu URL
+        const API_URL = 'https://script.google.com/macros/s/XXXXXXXXXXXX/exec'; // Reemplaza con tu URL
 
         function cargarDatos() {
             fetch(API_URL)
@@ -111,10 +111,33 @@
                 .catch(error => console.error('Error cargando datos:', error));
         }
 
-        // Cargar datos al inicio y refrescar cada 5 segundos
+        function descargarExcel() {
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    let csvContent = "data:text/csv;charset=utf-8,"
+                        + "Nombre,RUT,Empresa,Tipo,Patente,Punto,Hora\n";
+
+                    data.forEach(registro => {
+                        let row = `${registro.nombre},${registro.rut},${registro.empresa},${registro.tipo},${registro.patente},${registro.punto},${registro.hora}`;
+                        csvContent += row + "\n";
+                    });
+
+                    const encodedUri = encodeURI(csvContent);
+                    const link = document.createElement("a");
+                    link.setAttribute("href", encodedUri);
+                    link.setAttribute("download", "registros_ingreso.csv");
+                    document.body.appendChild(link);
+
+                    link.click();
+                    document.body.removeChild(link);
+                });
+        }
+        
+       // Cargar datos al inicio y refrescar cada 5 segundos
         cargarDatos();
         setInterval(cargarDatos, 5000);
-
+        
         // Filtros en tiempo real
         document.getElementById('buscarNombre').addEventListener('input', cargarDatos);
         document.getElementById('filtrarPunto').addEventListener('change', cargarDatos);
