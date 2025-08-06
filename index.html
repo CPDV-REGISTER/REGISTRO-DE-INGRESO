@@ -1,60 +1,111 @@
 <!DOCTYPE html>
 <html lang="es">
-<head> 
+<head>
     <meta charset="UTF-8">
-    <title>REGISTRO DE INGRESOS</title>
+    <title>Registro de Ingreso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f8;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: inline-block;
+            margin-top: 20px;
+        }
+        img.logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin: 10px 0 5px 10%;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 80%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h2>REGISTRO INGRESOS CPDV</h2>
-    <form id="registroForm">
-        <input type="text" id="nombre" placeholder="Nombre" required><br>
-        <input type="text" id="rut" placeholder="RUT" required><br>
-        <input type="text" id="empresa" placeholder="Empresa" required><br>
+    <img src="logo.png" alt="Logo Empresa" class="logo">
+    <div class="container">
+        <h2>Registro de Ingreso</h2>
+        <form id="registroForm">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" placeholder="Ingrese su nombre" required>
 
-        <label for="tipo">Tipo de Ingreso:</label><br> 
-        <select id="tipo" required>
-            <option value="">Seleccionar</option>
-            <option value="Peatonal">Peatonal</option>
-            <option value="Vehicular">Vehicular</option>
-        </select><br>
+            <label for="rut">RUT</label>
+            <input type="text" id="rut" placeholder="Ingrese su RUT" required>
 
-        <div id="patenteDiv" style="display:none;">
-            <input type="text" id="patente" placeholder="Patente"><br>
-        </div>
-    
-        <label for="punto">Punto de Ingreso:</label><br> 
-        <select id="punto" required>
-            <option value="">Seleccionar</option>
-            <option value="Charly 2">Charly 2</option>
-            <option value="Charly 3">Charly 3</option>
-        </select><br>
-        <button type="submit">Registrar</button>
-    </form>
-    <p id="countdownMensaje"></p>
-    <p id="mensaje"></p>
+            <label for="empresa">Empresa</label>
+            <input type="text" id="empresa" placeholder="Ingrese su empresa" required>
+
+            <label for="tipo">Tipo de Ingreso</label>
+            <select id="tipo" required>
+                <option value="">Seleccione...</option>
+                <option value="Peatonal">Peatonal</option>
+                <option value="Vehicular">Vehicular</option>
+            </select>
+
+            <div id="patenteDiv" style="display:none;">
+                <label for="patente">Patente</label>
+                <input type="text" id="patente" placeholder="Ingrese la patente">
+            </div>
+
+            <label for="punto">Punto de Ingreso</label>
+            <select id="punto" required>
+                <option value="">Seleccione...</option>
+                <option value="Charly 2">Charly 2</option>
+                <option value="Charly 3">Charly 3</option>
+            </select>
+
+            <button type="submit">Registrar</button>
+        </form>
+        <p id="countdownMensaje"></p>
+        <p id="mensaje"></p>
+    </div>
 
     <script>
         const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzHH3Z-sdS4sQdhBqfdcDIQ8GKNq7MoM95ZsY_KyXza-cRK2olqfWKrdsxAY1Yul7jtIg/exec'; // Reemplaza con tu URL
 
         // Mostrar/ocultar patente si elige Vehicular
-        document.getElementById('tipo').addEventListener('change', function() {
+    document.getElementById('tipo').addEventListener('change', function() {
             const patenteDiv = document.getElementById('patenteDiv');
             if (this.value === 'Vehicular') {
                 patenteDiv.style.display = 'block';
-                document.getElementById('patente').setAttribute('required', 'required');
             } else {
                 patenteDiv.style.display = 'none';
-                document.getElementById('patente').removeAttribute('required');
             }
         });
 
+              // Cuenta regresiva
         document.getElementById('registroForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
-        // Cuenta regresiva
-            let countdown = 5;
+            let countdown = 3;
             const countdownMensaje = document.getElementById('countdownMensaje');
-            countdownMensaje.innerText = `Enviando registro en ${countdown}...`;
+            countdownMensaje.innerText = `Enviando en ${countdown}...`;
 
             const interval = setInterval(() => {
                 countdown--;
@@ -68,7 +119,7 @@
                     const rut = document.getElementById('rut').value;
                     const empresa = document.getElementById('empresa').value;
                     const tipo = document.getElementById('tipo').value;
-                    const patente = tipo === 'Vehicular' ? document.getElementById('patente').value : '';
+                    const patente = document.getElementById('patente').value;
                     const punto = document.getElementById('punto').value;
                     const hora = new Date().toLocaleString();
 
@@ -95,6 +146,7 @@
     </script>
 </body>
 </html>
+
 
 
 
