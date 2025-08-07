@@ -12,12 +12,16 @@
             padding: 20px;
         }
         .container {
+            width: 25%;
             background: white;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 30px rgba(0,0,0,0.1);
             display: inline-block;
             margin-top: 20px;
+        }
+        .logo-container {
+            text-align: center;
         }
         img.logo {
             width: 150px;
@@ -26,7 +30,7 @@
         label {
             display: block;
             text-align: left;
-            margin: 10px 0 5px 10%;
+            margin: 10px 0 10px 40px;
             font-weight: bold;
         }
         input, select, button {
@@ -49,7 +53,9 @@
     </style>
 </head>
 <body>
-    <img src="LOGO-CPDV.png" alt="Logo Empresa" class="logo">
+    <div class="logo-container">
+        <img src="LOGO-CPDV.png" alt="Logo Empresa" class="logo">
+    </div>
     <div class="container">
         <h2>Registro de Ingreso</h2>
         <form id="registroForm">
@@ -88,10 +94,9 @@
     </div>
 
     <script>
-        const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzHH3Z-sdS4sQdhBqfdcDIQ8GKNq7MoM95ZsY_KyXza-cRK2olqfWKrdsxAY1Yul7jtIg/exec'; // Reemplaza con tu URL
+        const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzHH3Z-sdS4sQdhBqfdcDIQ8GKNq7MoM95ZsY_KyXza-cRK2olqfWKrdsxAY1Yul7jtIg/exec';
 
-        // Mostrar/ocultar patente si elige Vehicular
-    document.getElementById('tipo').addEventListener('change', function() {
+        document.getElementById('tipo').addEventListener('change', function() {
             const patenteDiv = document.getElementById('patenteDiv');
             if (this.value === 'Vehicular') {
                 patenteDiv.style.display = 'block';
@@ -100,9 +105,8 @@
             }
         });
 
-              // Cuenta regresiva
         document.getElementById('registroForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Evita que el formulario se envíe de forma tradicional.
+            e.preventDefault();
             let countdown = 5;
             const countdownMensaje = document.getElementById('countdownMensaje');
             countdownMensaje.innerText = `Enviando en ${countdown}...`;
@@ -110,13 +114,10 @@
             const interval = setInterval(() => {
                 countdown--;
                 if (countdown > 0) {
-                    // Muestra el contador en pantalla
                     countdownMensaje.innerText = `Enviando en ${countdown}...`;
                 } else {
-                    clearInterval(interval); // Detiene el contador
-        // Aquí enviamos los datos a Google Sheets
+                    clearInterval(interval);
 
-                    // Enviar datos después del countdown
                     const nombre = document.getElementById('nombre').value;
                     const rut = document.getElementById('rut').value;
                     const empresa = document.getElementById('empresa').value;
@@ -143,15 +144,10 @@
                         countdownMensaje.innerText = '';
                     });
                 }
-            }, 1000);// Cada 1000ms (1 segundo)
+            }, 1000);
         });
     </script>
 </body>
 </html>
-
-
-
-
-
 
 
